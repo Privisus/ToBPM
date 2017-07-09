@@ -31,7 +31,7 @@ public class ParseBPM {
     this.outputArea = outputArea;
   }
 
-  public ArrayList<Double[]> getParseResult() {
+  public LinkedList<Double[]> getParseResult() {
     String[] unparsedTimingList = cleanParsedInput();
 
     //timingList is a list of time to be parsed. Example: [1.0, 2.0, 3.0]
@@ -39,7 +39,7 @@ public class ParseBPM {
 
     //timingResult is the result of the parsing. The format is {[1.0, 60], [2.0, 60]}.
     //Notice that there is no [3.0, ...] because it has no reference to the future time (it is the last time)
-    ArrayList<Double[]> timingResult = new ArrayList<>();
+    LinkedList<Double[]> timingResult = new LinkedList<>();
 
     //timingList.length - 1 is used to prevent the last calculation from being calculated (because there is no t2 for the last timing)
     for (int i = 0; i < timingList.length - 1; i++) {
@@ -67,22 +67,19 @@ public class ParseBPM {
     String[] unparsedDirtyTimingList = splitInput(this.input);
     String[] unparsedTimingList = removeEmptyLine(unparsedDirtyTimingList);
 
-    removeAllWhiteSpaces(unparsedTimingList);
-    replaceCommaToPoint(unparsedTimingList);
-    removeAndRemainOnePoint(unparsedTimingList);
+    cleanList(unparsedTimingList);
 
     return unparsedTimingList;
   }
 
-  public void removeAndRemainOnePoint(String[] unparsedTimingList) {
+  public void cleanList(String[] unparsedTimingList) {
     for (int currentIndex = 0; currentIndex < unparsedTimingList.length; currentIndex++) {
-      unparsedTimingList[currentIndex] = unparsedTimingList[currentIndex].replaceAll("\\.(?=.*\\.)", "");
-    }
-  }
-
-  public void removeAllWhiteSpaces(String[] unparsedTimingList) {
-    for (int currentIndex = 0; currentIndex < unparsedTimingList.length; currentIndex++) {
+      //Remove whitespaces
       unparsedTimingList[currentIndex] = unparsedTimingList[currentIndex].replaceAll(" ", "");
+      //Replace comma with point
+      unparsedTimingList[currentIndex] = unparsedTimingList[currentIndex].replaceAll(",", ".");
+      //Remove all points but one at the very right
+      unparsedTimingList[currentIndex] = unparsedTimingList[currentIndex].replaceAll("\\.(?=.*\\.)", "");
     }
   }
 
@@ -123,23 +120,18 @@ public class ParseBPM {
     return timingList;
   }
 
-  private void replaceCommaToPoint(String[] timingList) {
-    for (int i = 0; i < timingList.length; i++) {
-      timingList[i] = timingList[i].replaceAll(",", ".");
-    }
-  }
-
   public void setInput(String input) {
     this.input = input;
   }
 
   public void parseToOutput() {
-    ArrayList<Double[]> timingResult = getParseResult();
+    LinkedList<Double[]> timingResult = getParseResult();
 
     //Clean the area first before outputting the result. This overwrites the previous parse output.
     //TODO make overwrite as an option and make a "clear output" & "copy" button
     outputArea.setText("");
 
+    //Oh no it's O(n)
     for (Double[] timing : timingResult) {
       outputArea.setText(outputArea.getText() +
           String.format("When t = %.5fs, it is %.5f BPM", timing[0], timing[1])

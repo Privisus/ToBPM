@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.swing.JTextArea;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -6,8 +6,8 @@ public abstract class ToBPMTest {
 
   public JTextArea outputArea;
   public ParseBPM parseBPM = new ParseBPM("", outputArea);
-  public ArrayList<Double[]> parseBPMResult = new ArrayList<>();
-  public ArrayList<Double[]> expectedBPMResult = new ArrayList<>();
+  public LinkedList<Double[]> parseBPMResult = new LinkedList<>();
+  public LinkedList<Double[]> expectedBPMResult = new LinkedList<>();
   public Double[] parseStringToDoubleResult;
   public Double[] expectedTimingResult;
 
