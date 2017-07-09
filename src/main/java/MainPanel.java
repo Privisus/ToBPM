@@ -28,7 +28,7 @@ import javax.swing.border.Border;
 public class MainPanel extends JPanel {
 
   private JButton parseButton;
-  private JTextArea parseInput, parseOutput;
+  private JTextArea parseInput, parseOutput; //TODO make when user press [TAB] on parseInput, it will automatically focus to the parseButton.
   private JScrollPane inputScroll, outputScroll;
   private Border inputBorder, outputBorder;
   private Box box;
