@@ -16,43 +16,25 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
 
-public class ParseClickListener implements ActionListener {
+public class ParseClearListener implements ActionListener {
 
-  private JButton parseButton;
-  private JTextArea parseInput, parseOutput;
-  private ParseBPM parseBPM;
-  private JCheckBox autocopy, overwrite;
+  private JButton clearButton;
+  private JTextArea parseOutput;
 
-  public ParseClickListener(JButton parseButton, JTextArea parseInput, JTextArea parseOutput, JCheckBox autocopy, JCheckBox overwrite) {
-    this.parseButton = parseButton;
-    this.parseInput = parseInput;
+  public ParseClearListener(JButton clearButton, JTextArea parseOutput) {
+    this.clearButton = clearButton;
     this.parseOutput = parseOutput;
-    this.autocopy = autocopy;
-    this.overwrite = overwrite;
-    parseBPM = new ParseBPM("", parseOutput);
   }
 
   @Override
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == parseButton) {
-      parseBPM.setInput(parseInput.getText());
-      parseBPM.parseToOutput(overwrite.isSelected());
-
-      copyOutputToClipboard();
-    }
-  }
-
-  private void copyOutputToClipboard() {
-    if (autocopy.isSelected()) {
-      Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(parseOutput.getText()), null);
+    if (e.getSource() == clearButton) {
+      parseOutput.setText("");
     }
   }
 }

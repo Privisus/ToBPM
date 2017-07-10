@@ -11,7 +11,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '1.0'
+version = '2.0'
 
 buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'

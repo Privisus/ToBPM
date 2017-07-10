@@ -123,12 +123,14 @@ public class ParseBPM {
     this.input = input;
   }
 
-  public void parseToOutput() {
+  public void parseToOutput(boolean overwrite) {
     LinkedList<Double[]> timingResult = getParseResult();
 
     //Clean the area first before outputting the result. This overwrites the previous parse output.
     //TODO make overwrite as an option and make a "clear output" & "copy" button
-    outputArea.setText("");
+    if (overwrite) {
+      outputArea.setText("");
+    }
 
     //Oh no it's O(n)
     for (Double[] timing : timingResult) {
@@ -137,6 +139,10 @@ public class ParseBPM {
           + "\n"
       );
     }
+  }
+
+  public void parseToOutput() {
+    parseToOutput(true);
   }
 
   public double calculateBPM(double t2, double t1) {
