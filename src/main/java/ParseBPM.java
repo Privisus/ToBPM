@@ -16,8 +16,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 import javax.swing.JTextArea;
@@ -68,23 +66,20 @@ public class ParseBPM {
   }
 
   private String[] cleanParsedInput() {
+    cleanString(this.input);
+
     String[] unparsedDirtyTimingList = splitInput(this.input);
     String[] unparsedTimingList = removeEmptyLine(unparsedDirtyTimingList);
-
-    cleanList(unparsedTimingList);
 
     return unparsedTimingList;
   }
 
-  public void cleanList(String[] unparsedTimingList) {
-    for (int currentIndex = 0; currentIndex < unparsedTimingList.length; currentIndex++) {
-      //Remove whitespaces
-      unparsedTimingList[currentIndex] = whitespaces.matcher(unparsedTimingList[currentIndex]).replaceAll("");
-      //Replace comma with point
-      unparsedTimingList[currentIndex] = commaToPoint.matcher(unparsedTimingList[currentIndex]).replaceAll(".");
-      //Remove all points but one at the very right
-      unparsedTimingList[currentIndex] = lastPoint.matcher(unparsedTimingList[currentIndex]).replaceAll("");
-    }
+  public void cleanString(String input) {
+    this.input = whitespaces.matcher(this.input).replaceAll("");
+    //Replace comma with point
+    this.input = commaToPoint.matcher(this.input).replaceAll(".");
+    //Remove all points but one at the very right
+    this.input = lastPoint.matcher(this.input).replaceAll("");
   }
 
   public String[] removeEmptyLine(String[] unparsedDirtyTimingList) {

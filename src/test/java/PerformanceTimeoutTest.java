@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Test;
 public class PerformanceTimeoutTest extends ToBPMTest {
 
   @Test
-  @DisplayName("Test parsing 100 \"trash\" timing must not exceed 100ms")
+  @DisplayName("Test parsing 1000 \"trash\" timing must not exceed 1000ms")
   void testParseTiming() {
     StringBuilder inputBuilder = new StringBuilder();
-    for (int i = 1; i <= 100; i++) {
+    for (int i = 1; i <= 1000; i++) {
       inputBuilder.append(String.format(",.,.,..,%.7f", (double) i));
     }
     String result = inputBuilder.toString();
 
-    Assertions.assertTimeout(Duration.ofMillis(100), () -> setupParseToBPM(result));
+    Assertions.assertTimeout(Duration.ofMillis(1000), () -> setupParseToBPM(result));
   }
 }
