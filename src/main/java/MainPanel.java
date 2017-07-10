@@ -19,6 +19,7 @@
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -27,12 +28,14 @@ import javax.swing.border.Border;
 
 public class MainPanel extends JPanel {
 
-  private JButton parseButton;
-  private JTextArea parseInput, parseOutput; //TODO make when user press [TAB] on parseInput, it will automatically focus to the parseButton.
+  private JButton parseButton, clearButton;
+  private JTextArea parseInput, parseOutput;
   private JScrollPane inputScroll, outputScroll;
   private Border inputBorder, outputBorder;
-  private Box box;
+  private Box mainBox, buttonBox;
 
+  private JCheckBox overwriteCheckBox = new JCheckBox("overwrite", true);
+  private JCheckBox autoCopyCheckBox = new JCheckBox("auto-copy", true);
 
   public MainPanel() {
     createAllComponents();
@@ -44,28 +47,40 @@ public class MainPanel extends JPanel {
   }
 
   private void applyLayout() {
-    this.box = Box.createVerticalBox();
+    this.mainBox = Box.createVerticalBox();
+    this.buttonBox = Box.createHorizontalBox();
   }
 
   private void applyListenerToComponents() {
-    parseButton.addActionListener(new ParseClickListener(parseButton, parseInput, parseOutput));
+    parseInput.addKeyListener(new ParseInputListener(parseButton));
+    parseButton.addActionListener(
+        new ParseClickListener(parseButton, parseInput, parseOutput, autoCopyCheckBox,
+            overwriteCheckBox));
+    clearButton.addActionListener(new ParseClearListener(clearButton, parseOutput));
   }
 
   private void createAllComponents() {
     //Create a parse button
-    parseButton = new JButton("Parse timing") {
+    parseButton = new JButton("Parse") {
       {
-        setSize(200, 10);
+        setSize(70, 25);
         setMaximumSize(getSize());
       }
     };
-
     parseButton.setAlignmentX(CENTER_ALIGNMENT);
+
+    clearButton = new JButton("Clear") {
+      {
+        setSize(70, 25);
+        setMaximumSize(getSize());
+      }
+    };
 
     //Create a text field so user can put their timings
     parseInput = new JTextArea(5, 30);
     parseInput.setLineWrap(true);
     parseInput.setWrapStyleWord(true);
+    parseInput.setFocusTraversalKeysEnabled(true);
 
     //Create input scroll pane
     inputScroll = new JScrollPane(parseInput, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -89,23 +104,33 @@ public class MainPanel extends JPanel {
   }
 
   private void putAllComponents() {
-    box.add(inputScroll);
+    buttonBox.add(parseButton);
+    buttonBox.add(Box.createHorizontalStrut(15));
+    buttonBox.add(clearButton);
+    buttonBox.add(Box.createHorizontalGlue());
+    buttonBox.add(autoCopyCheckBox);
+    buttonBox.add(overwriteCheckBox);
 
-    box.add(parseButton);
+    mainBox.add(inputScroll);
 
-    box.add(outputScroll);
+    mainBox.add(buttonBox);
 
-    add(box);
+    mainBox.add(outputScroll);
+
+    add(mainBox);
   }
 
+  @Deprecated
   public JButton getParseButton() {
     return parseButton;
   }
 
+  @Deprecated
   public JTextArea getParseInput() {
     return parseInput;
   }
 
+  @Deprecated
   public JTextArea getParseOutput() {
     return parseOutput;
   }
