@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class PerformanceTimeoutTest extends ToBPMTest {
 
   @Test
-  @DisplayName("Test parsing 1000 \"trash\" timing must not exceed 1000ms")
+  @DisplayName("Test parsing 1000 \"trash\" timing must not exceed 1500ms")
   void testParseTiming() {
     StringBuilder inputBuilder = new StringBuilder();
     for (int i = 1; i <= 1000; i++) {
@@ -14,6 +14,6 @@ public class PerformanceTimeoutTest extends ToBPMTest {
     }
     String result = inputBuilder.toString();
 
-    Assertions.assertTimeout(Duration.ofMillis(1000), () -> setupParseToBPM(result));
+    Assertions.assertTimeout(Duration.ofMillis(1500), () -> setupParseToBPM(result));
   }
 }
