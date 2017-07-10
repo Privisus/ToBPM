@@ -1,5 +1,5 @@
 # Building
-![](https://api.travis-ci.org/Privisus/ToBPM.svg?branch=master)
+[![Build Status](https://travis-ci.org/Privisus/ToBPM.svg?branch=master)](https://travis-ci.org/Privisus/ToBPM)
 
 `gradlew clean build zip`  
 
