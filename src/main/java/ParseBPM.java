@@ -19,12 +19,16 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.regex.Pattern;
 import javax.swing.JTextArea;
 
 public class ParseBPM {
 
   private JTextArea outputArea;
   private String input;
+  private Pattern lastPoint = Pattern.compile("\\.(?=.*\\.)");
+  private Pattern commaToPoint = Pattern.compile(",");
+  private Pattern whitespaces = Pattern.compile(" ");
 
   public ParseBPM(String input, JTextArea outputArea) {
     this.input = input;
@@ -75,11 +79,11 @@ public class ParseBPM {
   public void cleanList(String[] unparsedTimingList) {
     for (int currentIndex = 0; currentIndex < unparsedTimingList.length; currentIndex++) {
       //Remove whitespaces
-      unparsedTimingList[currentIndex] = unparsedTimingList[currentIndex].replaceAll(" ", "");
+      unparsedTimingList[currentIndex] = whitespaces.matcher(unparsedTimingList[currentIndex]).replaceAll("");
       //Replace comma with point
-      unparsedTimingList[currentIndex] = unparsedTimingList[currentIndex].replaceAll(",", ".");
+      unparsedTimingList[currentIndex] = commaToPoint.matcher(unparsedTimingList[currentIndex]).replaceAll(".");
       //Remove all points but one at the very right
-      unparsedTimingList[currentIndex] = unparsedTimingList[currentIndex].replaceAll("\\.(?=.*\\.)", "");
+      unparsedTimingList[currentIndex] = lastPoint.matcher(unparsedTimingList[currentIndex]).replaceAll("");
     }
   }
 
